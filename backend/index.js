@@ -1,36 +1,32 @@
 const express = require('express');
-const cors = require('cors');
-const dotenv = require('dotenv');
 const mongoose = require('mongoose');
-
-const ttsRoutes = require('./routes/ttsRoutes');
-const imageRoutes = require('./routes/imageRoutes');
+const cors = require('cors');
 const authRoutes = require('./routes/authRoutes');
-
-const userController = require('./controllers/userController');
+const imageRoutes = require('./routes/imageRoutes');
+const ttsRoutes = require('./routes/ttsRoutes');
+const videoRoutes = require('./controllers/videoController');
+const userRoutes = require('./routes/userRoutes');
 const authMiddleware = require('./middleware/authMiddleware');
-const { generateVideo } = require('./controllers/videoController');
+require('dotenv').config();
 
-dotenv.config();
 const app = express();
-app.use(cors({
-  origin: ['http://localhost:5173', 'https://yourfrontend.com'],
-  credentials: true,
-}));
-
+// Middleware
+app.use(cors());
 app.use(express.json());
+// Connect to MongoDB
+mongoose.connect(process.env.MONGODB_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
+.then(() => console.log('Connected to MongoDB'))
+.catch(err => console.error('MongoDB connection error:', err));
 
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log('MongoDB connected'))
-  .catch((err) => console.error(err));
-
-
-app.use('/api/tts', ttsRoutes);
-app.use('/api/image', imageRoutes);
+// Routes
 app.use('/api/auth', authRoutes);
-app.get('/api/users/me', userController.getCurrentUser);
-app.put('/update', authMiddleware, userController.updateUser);
-app.post('/api/video', generateVideo);
+app.use('/api/image', authMiddleware, imageRoutes);
+app.use('/api/tts',authMiddleware, ttsRoutes);
+app.use('/api/video',authMiddleware, videoRoutes.generateVideo);
+app.use('/api/users', userRoutes);
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

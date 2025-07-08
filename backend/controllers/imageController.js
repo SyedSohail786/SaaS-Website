@@ -1,4 +1,5 @@
 const axios = require('axios');
+const User = require('../models/User');
 
 exports.generateImage = async (req, res) => {
   const { prompt } = req.body;
@@ -11,7 +12,7 @@ exports.generateImage = async (req, res) => {
     const response = await axios.post(
       'https://api.replicate.com/v1/predictions',
       {
-        version: 'ac732df83cea7fff18b8472768c88ad041fa750ff7682a21affe81863cbe77e4', // Stable Diffusion 1.5
+        version: 'ac732df83cea7fff18b8472768c88ad041fa750ff7682a21affe81863cbe77e4',
         input: {
           prompt: prompt,
           width: 512,
@@ -52,17 +53,17 @@ exports.generateImage = async (req, res) => {
       await new Promise((resolve) => setTimeout(resolve, 2000));
     }
 
+    // Update user's image usage count
+    await User.findByIdAndUpdate(req.user._id, {
+      $inc: { 'usage.images': 1 },
+      lastLogin: new Date()
+    });
+
     res.json({ image: result });
   } catch (error) {
     console.error(error.response?.data || error.message);
     res.status(500).json({
-      error:
-        error.response?.data?.error?.message ||
-        error.message ||
-        'Internal server error',
+      error: error.response?.data?.error?.message || error.message || 'Internal server error',
     });
   }
 };
-
-
-

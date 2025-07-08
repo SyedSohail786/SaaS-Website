@@ -12,7 +12,7 @@ module.exports = function(req, res, next) {
   // Verify token
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = { id: decoded.userId };
+    req.user = { _id: decoded.userId }; // Changed to _id for consistency with Mongoose
     next();
   } catch (err) {
     res.status(401).json({ msg: 'Token is not valid' });

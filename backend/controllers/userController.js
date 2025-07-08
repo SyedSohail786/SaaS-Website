@@ -1,29 +1,25 @@
 const User = require('../models/User');
-const jwt = require('jsonwebtoken');
 
-// Get current user profile
+// Get current user profile with detailed usage stats
 exports.getCurrentUser = async (req, res) => {
   try {
-    const token = req.headers.authorization?.split(' ')[1];
-    if (!token) {
-      return res.status(401).json({ message: 'Authentication required' });
-    }
-
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const user = await User.findById(decoded.userId).select('-password');
-
+    const user = await User.findById(req.user._id).select('-password');
+    
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    res.json({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      createdAt: user.createdAt,
-      lastLogin: user.lastLogin,
-      usage: user.usage
-    });
+    // Ensure usage object exists with all fields
+    const userWithDefaults = {
+      ...user._doc,
+      usage: {
+        images: user.usage?.images || 0,
+        audio: user.usage?.audio || 0,
+        videos: user.usage?.videos || 0
+      }
+    };
+
+    res.json(userWithDefaults);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Server error' });
@@ -35,7 +31,7 @@ exports.updateUser = async (req, res) => {
   try {
     const { name } = req.body;
     const user = await User.findByIdAndUpdate(
-      req.user.id,
+      req.user._id,
       { name },
       { new: true }
     ).select('-password');

@@ -1,4 +1,5 @@
 const axios = require('axios');
+const User = require('../models/User');
 
 exports.generateVideo = async (req, res) => {
   const { prompt } = req.body;
@@ -107,6 +108,12 @@ exports.generateVideo = async (req, res) => {
     if (!videoUrl) {
       throw new Error('Video generation timed out');
     }
+
+    // Update user's video usage count
+    await User.findByIdAndUpdate(req.user._id, {
+      $inc: { 'usage.videos': 1 },
+      lastLogin: new Date()
+    });
 
     res.json({ 
       success: true,
