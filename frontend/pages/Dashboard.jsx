@@ -6,8 +6,9 @@ import {
   FiDownload, FiMenu, FiX
 } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
-const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:8000'; 
-const AIDashboard = () => {
+
+const backendUrl = import.meta.env.VITE_BACKEND_URL ;
+const Dashboard = () => {
   const navigate = useNavigate();
   const [activeService, setActiveService] = useState(null);
   const [showProfile, setShowProfile] = useState(false);
@@ -307,6 +308,7 @@ const AIDashboard = () => {
                 <FiLogOut className="mr-3" />
                 Logout
               </button>
+              <span className='text-sm'>Developed by Syed Sohail with ❤️</span>
             </div>
           </motion.div>
         )}
@@ -601,4 +603,4 @@ const AIDashboard = () => {
   );
 };
 
-export default AIDashboard;
+export default Dashboard;
