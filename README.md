@@ -1,7 +1,5 @@
 # 🚀 AI Studio - Full Stack AI Application
 
-![AI Studio Banner](https://via.placeholder.com/1200x400?text=AI+Studio+Banner)
-
 A complete SaaS platform integrating Google TTS, Replicate AI models, and user authentication.
 
 ## 🌟 Features
