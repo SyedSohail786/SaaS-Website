@@ -31,6 +31,7 @@ REPLICATE_API_TOKEN=your_replicate_api_token
 PORT=8000
 MONGODB_URI=mongodb://localhost:27017/ai_studio
 JWT_SECRET=yourSuperSecretKeyForJWT
+FRONTEND_URL=your frontend url
 ```
 ## 🚀 Installation
 ### Clone the repository
