@@ -8,13 +8,13 @@ const videoRoutes = require('./controllers/videoController');
 const userRoutes = require('./routes/userRoutes');
 const authMiddleware = require('./middleware/authMiddleware');
 require('dotenv').config();
-
 const app = express();
-// Middleware
 app.use(cors({
   origin: process.env.FRONTEND_URL,
   credentials: true
 }));
+
+// Middleware
 app.use(express.json());
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI, {
