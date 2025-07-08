@@ -11,20 +11,10 @@ require('dotenv').config();
 
 const app = express();
 // Middleware
-const corsOptions = {
-  origin: [
-    'http://localhost:8000',
-    'https://saas-website-qvou.onrender.com',
-  ],
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true, 
-  optionsSuccessStatus: 200 
-};
-// Apply CORS middleware
-app.use(cors(corsOptions));
-// Handle preflight requests
-app.options('*', cors(corsOptions));
+app.use(cors({
+  origin: process.env.FRONTEND_URL,
+  credentials: true
+}));
 app.use(express.json());
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI, {
