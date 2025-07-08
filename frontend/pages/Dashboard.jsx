@@ -188,6 +188,8 @@ const AIDashboard = () => {
   useEffect(() => {
     setPrompt('');
     setOutput('');
+    setError('');
+    setVideoProgress(0);
   }, [activeService]);
 
   const services = [
