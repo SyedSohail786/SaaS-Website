@@ -6,7 +6,7 @@ import {
   FiDownload, FiMenu, FiX
 } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
-
+const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:8000'; 
 const AIDashboard = () => {
   const navigate = useNavigate();
   const [activeService, setActiveService] = useState(null);
@@ -46,7 +46,7 @@ const AIDashboard = () => {
   const fetchUserData = async () => {
     setLoadingUser(true);
     try {
-      const response = await fetch('http://localhost:8000/api/users/me', {
+      const response = await fetch(`${backendUrl}/api/users/me`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
@@ -91,15 +91,15 @@ const AIDashboard = () => {
 
       switch (activeService) {
         case 'text-to-image':
-          endpoint = 'http://localhost:8000/api/image';
+          endpoint = `${backendUrl}/api/image`;
           requestBody = { prompt };
           break;
         case 'text-to-speech':
-          endpoint = 'http://localhost:8000/api/tts';
+          endpoint = `${backendUrl}/api/tts`;
           requestBody = { text: prompt };
           break;
         case 'text-to-video':
-          endpoint = 'http://localhost:8000/api/video';
+          endpoint = `${backendUrl}/api/video`;
           requestBody = { prompt };
           const interval = setInterval(() => {
             setVideoProgress(prev => {

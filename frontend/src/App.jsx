@@ -1,9 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Auth from "./components/Auth";
 import Dashboard from "../pages/Dashboard";
-import TextToSpeech from "./components/TextToSpeech";
-import TextToImage from "./components/TextToImage";
-import TextToVideo from "./components/TextToVideo";
+import PageNotFound from "./components/PageNotFound";
 
 function App() {
   return (
@@ -11,10 +9,7 @@ function App() {
       <Routes>
         <Route path="/" element={< Dashboard/>} />
         <Route path="auth" element={< Auth/>} />
-        <Route path="/text-to-speech" element={<TextToSpeech />} />
-        <Route path="/text-to-image" element={<TextToImage />} />
-        <Route path="/text-to-video" element={<TextToVideo />} />
-        
+        <Route path="*" element={<PageNotFound/>} />
       </Routes>
     </BrowserRouter>
   );
