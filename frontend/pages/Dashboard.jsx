@@ -308,7 +308,7 @@ const Dashboard = () => {
                 <FiLogOut className="mr-3" />
                 Logout
               </button>
-              <span className='text-sm'>Developed by Syed Sohail with ❤️</span>
+{/*               <span className='text-sm'>Developed by Syed Sohail with ❤️</span> */}
             </div>
           </motion.div>
         )}
